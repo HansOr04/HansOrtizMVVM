@@ -50,8 +50,17 @@ namespace HansOrtizApuntes.ViewModels
 
         private async Task Delete()
         {
-            _note.Delete();
-            await Shell.Current.GoToAsync($"..?deleted={_note.Filename}");
+            try
+            {
+                _note.Delete();
+                await Shell.Current.GoToAsync($"..?deleted={_note.Filename}");
+            }
+            catch (Exception ex)
+            {
+                // Para depuración
+                await Shell.Current.DisplayAlert("Error",
+                    $"Error al eliminar la nota: {ex.Message}", "OK");
+            }
         }
 
         void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
